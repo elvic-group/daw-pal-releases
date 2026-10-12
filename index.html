@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DAW Pal — tell your DAW what to do</title>
+  <meta name="description" content="DAW Pal is a small panel that sits on top of Ableton Live, Logic Pro, LUNA or REAPER. Type what you want, and it does it in your session, with your own AI model.">
+  <meta name="theme-color" content="#17181a">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+  <style>
+    :root {
+      --bg: #17181a; --surface: #1f2023; --line: rgba(255, 255, 255, 0.08); --line-strong: rgba(255, 255, 255, 0.16);
+      --text: #eae8e3; --muted: #a09e96; --accent: #e8a33d; --accent-ink: #1c1505;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+    header { display: flex; align-items: center; gap: 10px; padding: 20px 0; }
+    header img { width: 28px; height: 28px; }
+    header .name { font-weight: 600; }
+    header a { margin-left: auto; color: var(--muted); font-size: 14px; text-decoration: none; }
+    header a:hover { color: var(--text); }
+
+    .hero { display: grid; grid-template-columns: 1fr 420px; gap: 64px; align-items: center; padding: 48px 0 80px; }
+    h1 { font-size: clamp(34px, 5vw, 52px); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 20px; font-weight: 650; }
+    .lede { font-size: 19px; color: var(--muted); max-width: 34em; margin: 0 0 32px; }
+    .get { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .btn { display: inline-block; padding: 12px 20px; border-radius: 8px; border: 1px solid var(--line-strong); text-decoration: none; font-weight: 600; font-size: 15px; }
+    .btn:hover { background: var(--surface); }
+    .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+    .btn.primary:hover { background: #f0b253; }
+    .fine { color: var(--muted); font-size: 14px; margin: 16px 0 0; }
+    .shot { width: 100%; height: auto; border: 1px solid var(--line-strong); border-radius: 12px; display: block; }
+
+    section { padding: 64px 0; border-top: 1px solid var(--line); }
+    h2 { font-size: 26px; letter-spacing: -0.01em; margin: 0 0 32px; font-weight: 620; }
+    .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; counter-reset: step; }
+    .steps li { counter-increment: step; }
+    .steps li::before { content: counter(step); font: 13px var(--mono); color: var(--accent); display: block; margin-bottom: 10px; }
+    .steps h3 { margin: 0 0 6px; font-size: 17px; }
+    .steps p, .note { margin: 0; color: var(--muted); font-size: 15px; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 15px; }
+    th, td { text-align: left; padding: 12px 16px 12px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); font-weight: 500; font-size: 13px; }
+    td:first-child { font-weight: 600; white-space: nowrap; }
+    td { color: var(--muted); }
+    td:first-child { color: var(--text); }
+    .note { margin-top: 20px; max-width: 46em; }
+
+    .asks { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .asks li { background: var(--surface); border: 1px solid var(--line); border-left: 2px solid var(--accent); border-radius: 8px; padding: 12px 16px; font-size: 15px; }
+
+    footer { padding: 32px 0 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+
+    @media (max-width: 880px) {
+      .hero { grid-template-columns: 1fr; gap: 40px; padding: 24px 0 56px; }
+      .shot { max-width: 420px; }
+      .steps { grid-template-columns: 1fr; gap: 28px; }
+      .asks { grid-template-columns: 1fr; }
+      section { padding: 48px 0; }
+    }
+    @media (max-width: 520px) {
+      .wrap { padding: 0 16px; }
+      .btn { width: 100%; text-align: center; }
+      th:nth-child(3), td:nth-child(3) { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <img src="logo.svg" alt="">
+      <span class="name">DAW Pal</span>
+      <a href="#download">Download</a>
+    </header>
+
+    <main>
+      <div class="hero" id="download">
+        <div>
+          <h1>Tell your DAW what to do, in your own words.</h1>
+          <p class="lede">DAW Pal is a small panel that floats on top of your session. Type “add a drum track and write a four-on-the-floor beat” and it does it — in Ableton Live, Logic Pro, LUNA or REAPER, with the AI model you already use.</p>
+          <div class="get">
+            <a class="btn primary" id="get-mac" href="https://github.com/elvic-group/daw-pal-releases/releases/latest">Download for Mac</a>
+            <a class="btn" id="get-win" href="https://github.com/elvic-group/daw-pal-releases/releases/latest">Download for Windows</a>
+          </div>
+          <p class="fine">Free while in beta. Mac with Intel or Apple silicon, Windows 10 and 11.</p>
+        </div>
+        <img class="shot" src="panel.jpg" width="840" height="920" alt="The DAW Pal panel: a message box with suggestions such as “Set the tempo to 120 and start playback”.">
+      </div>
+
+      <section>
+        <h2>Set up in three steps</h2>
+        <ol class="steps">
+          <li><h3>Install DAW Pal</h3><p>One download. It lives in your menu bar and opens with a keyboard shortcut, or in its own window from your browser.</p></li>
+          <li><h3>Pick your DAW</h3><p>DAW Pal puts its add-on into Ableton Live or REAPER for you. Logic Pro and LUNA need nothing extra.</p></li>
+          <li><h3>Pick your model</h3><p>Paste a key for Claude, OpenAI or OpenRouter, or point it at a model running on your own computer with Ollama or LM Studio.</p></li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>Things you can ask</h2>
+        <ul class="asks">
+          <li>What is in this session?</li>
+          <li>Add a drum track and write a four-on-the-floor beat</li>
+          <li>Set the tempo to 120 and start playback</li>
+          <li>Which plug-ins are on the selected track?</li>
+        </ul>
+        <p class="note">Every change shows up in the panel as it happens, with undo. Anything that deletes or exports asks you first.</p>
+      </section>
+
+      <section>
+        <h2>Works with</h2>
+        <table>
+          <thead><tr><th>DAW</th><th>Runs on</th><th>What DAW Pal installs</th></tr></thead>
+          <tbody>
+            <tr><td>Ableton Live</td><td>Mac, Windows</td><td>A control surface script</td></tr>
+            <tr><td>REAPER</td><td>Mac, Windows</td><td>An extension</td></tr>
+            <tr><td>Logic Pro</td><td>Mac</td><td>Nothing</td></tr>
+            <tr><td>LUNA</td><td>Mac</td><td>Nothing</td></tr>
+          </tbody>
+        </table>
+        <p class="note">The optional DAW Pal Effect and Instrument plug-ins (VST3 and AU) let it open and adjust your third-party plug-ins too.</p>
+      </section>
+
+      <section>
+        <h2>Your keys and your music stay with you</h2>
+        <p class="note" style="margin-top:0">DAW Pal runs on your computer. API keys are kept in your system keychain and sent only to the model provider you chose. With a local model, nothing leaves your machine.</p>
+      </section>
+    </main>
+
+    <footer>DAW Pal is not affiliated with Ableton, Apple, Cockos or Universal Audio.</footer>
+  </div>
+  <script>
+    // Put the visitor's own system first.
+    if (/Win/.test(navigator.platform)) {
+      document.getElementById("get-win").classList.add("primary");
+      document.getElementById("get-mac").classList.remove("primary");
+      document.querySelector(".get").prepend(document.getElementById("get-win"));
+    }
+  </script>
+</body>
+</html>
